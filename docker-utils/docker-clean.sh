@@ -17,7 +17,7 @@ docker-clean() {
     # Get environment variables before removing the container 
     local env_variables=$(docker exec "$container_name" env | cut -d= -f1)
 
-    local start_new_container=docker run -d --restart always --name "$container_name" $(for env_var in $env_variables; do echo "-e $env_var=$(docker exec "$container_name" printenv "$env_var")"; done)
+    local start_new_container="docker run -d --restart always --name "$container_name" $(for env_var in $env_variables; do echo "-e $env_var=$(docker exec "$container_name" printenv "$env_var")"; done)"
 
     # Stop and remove the existing container
     docker stop "$container_name" && docker rm "$container_name"
