@@ -36,6 +36,7 @@ docker-clean() {
                 echo "The old image is still in use by other containers so it won't be removed."
             else
                 docker rmi "$old_image_id"
+            fi
         fi
     else
         echo "Unable to determine the image ID for the old image."
