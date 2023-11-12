@@ -9,7 +9,7 @@ docker-clean() {
     local new_image="$2"
 
     # Get the image ID before removing the container
-    local old_image_id=$(docker inspect -f '{{.Image}}' "$container_name")
+    local old_image_id=$(docker inspect -f '{{.Config.Image}}' "$container_name")
 
     # Get the port mapping before removing the container
     local port_mapping=$(docker port "$container_name" | cut -d' ' -f3 | cut -d: -f2)
@@ -36,11 +36,9 @@ docker-clean() {
     # start the new container
     eval "$start_new_container"
 
-    local new_image_id=$(docker inspect -f '{{.Image}}' "$container_name")
     # Remove the old image
     if [ -n "$old_image_id" ]; then
-        if [ "$old_image_id" != "$new_image_id" ]; then
-            echo $old_image_id $new_image_id
+        if [ "$(diff <(echo "$old_image_id") <(echo "$new_image"))" != "" ]; then
         # if they are other containers using the old image, it won't be removed
             if docker ps -a --filter "ancestor=$old_image_id" --format '{{.Names}}' | grep -q "^$container_name$"; then
                 echo "The old image is still in use by other containers so it won't be removed."
