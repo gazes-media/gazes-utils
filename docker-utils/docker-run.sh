@@ -1,3 +1,7 @@
+if ! command -v docker &> /dev/null; then
+    echo "Error: Docker is not installed or not in the system PATH."
+    exit 1
+fi
  # Check if all arguments are provided
  docker-run() {
     if [ "$#" -lt 3 ]; then
@@ -44,7 +48,8 @@
     fi
 
     # Run the Docker container
-    docker run -d -p "$port:$port" -e "PORT=$port" --name "$container_name" $env_to_add --restart always "$image"
+    docker run -d -p "$port:$port" -e "PORT=$port" --name "$container_name" $env_to_add --restart always "$image" > /dev/null
+    echo "The container $container_name has been started."
 }
 
 docker-run "$@"
