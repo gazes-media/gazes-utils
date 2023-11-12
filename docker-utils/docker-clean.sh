@@ -1,3 +1,8 @@
+if ! command -v docker &> /dev/null; then
+    echo "Error: Docker is not installed or not in the system PATH."
+    exit 1
+fi
+
  # Check if both arguments are provided
 docker-clean() {
     if [ "$#" -ne 2 ]; then
@@ -17,8 +22,11 @@ docker-clean() {
     # Get environment variables before removing the container 
     local env_variables=$(docker exec "$container_name" env | cut -d= -f1)
 
-    local env_to_add=$(for env_var in $env_variables; do echo "-e $env_var=$(docker exec "$container_name" printenv "$env_var")"; done)
-    echo $env_to_add
+    local env_to_add=""
+    for env_var in $env_variables; do
+        env_value=$(docker exec "$container_name" printenv "$env_var")
+        env_to_add+=" -e $env_var=$env_value"
+    done
     local start_new_container="docker run -d --restart always --name $container_name $env_to_add"
 
     # Stop and remove the existing container
