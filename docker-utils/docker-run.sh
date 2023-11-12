@@ -20,9 +20,3 @@
 }
 
 docker-run "$@"
-    
-    # Run the Docker container
-    docker run -d -p "$port:$port" -e "PORT=$port" --name  --restart always "$container_name" "$image"
-}
-
-docker-run "$@"
