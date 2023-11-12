@@ -24,12 +24,15 @@ docker-clean() {
     if [ -n "$port_mapping" ]; then
         docker run -d -p "$port_mapping:$port_mapping" -e "PORT=$port_mapping" --restart always --name "$container_name" "$new_image"
     else
-        echo "Unable to determine port mapping for the container."
+        docker run -d --restart always --name "$container_name" "$new_image"
     fi
 
+    local new_image_id=$(docker inspect -f '{{.Image}}' "$container_name")
     # Remove the old image
     if [ -n "$old_image_id" ]; then
-        docker rmi "$old_image_id"
+        if [ "$old_image_id" != "$new_image_id" ]; then
+            docker rmi "$old_image_id"
+        fi
     else
         echo "Unable to determine the image ID for the old image."
     fi
