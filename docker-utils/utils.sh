@@ -1,4 +1,4 @@
-current_dir=$(gazes_directory)
+current_dir="$gazes_directory"
 
 alias docker-clean="$current_dir"/docker-utils/docker-clean.sh
 
