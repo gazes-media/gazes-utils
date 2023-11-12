@@ -18,6 +18,7 @@ docker-clean() {
     local env_variables=$(docker exec "$container_name" env | cut -d= -f1)
 
     local env_to_add=$(for env_var in $env_variables; do echo "-e $env_var=$(docker exec "$container_name" printenv "$env_var")"; done)
+    echo $env_to_add
     local start_new_container="docker run -d --restart always --name $container_name $env_to_add"
 
     # Stop and remove the existing container
