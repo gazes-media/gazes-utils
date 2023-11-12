@@ -1,3 +1,2 @@
-command="$gazes_directory"/docker-utils/utils.sh
+source "$gazes_directory"/docker-utils/utils.sh
 
-echo $(source $command)
