@@ -32,8 +32,22 @@ docker-clean() {
     # Stop and remove the existing container
     docker stop "$container_name" && docker rm "$container_name"
 
-    # Pull the new image
-    docker pull "$new_image"
+    if [ -n "$old_image_id" ]; then
+        if [ "$(diff <(echo "$old_image_id") <(echo "$new_image"))" != "" ]; then
+        # if they are other containers using the old image, it won't be removed
+            if docker ps -a --filter "ancestor=$old_image_id" --format '{{.Names}}' | grep -q "^$container_name$"; then
+                echo "The old image is still in use by other containers so it won't be removed."
+            else
+                docker rmi "$old_image_id"
+                    # Pull the new image
+                docker pull "$new_image"
+            fi
+        else
+            echo "The old image is the same as the new image so it won't be removed."
+        fi
+    else
+        echo "Unable to determine the image ID for the old image."
+    fi
 
     # Start a new container with the same name and the original port mapping
     if [ -n "$port_mapping" ]; then
@@ -44,21 +58,7 @@ docker-clean() {
     # start the new container
     eval "$start_new_container"
 
-    # Remove the old image
-    if [ -n "$old_image_id" ]; then
-        if [ "$(diff <(echo "$old_image_id") <(echo "$new_image"))" != "" ]; then
-        # if they are other containers using the old image, it won't be removed
-            if docker ps -a --filter "ancestor=$old_image_id" --format '{{.Names}}' | grep -q "^$container_name$"; then
-                echo "The old image is still in use by other containers so it won't be removed."
-            else
-                docker rmi "$old_image_id"
-            fi
-        else
-            echo "The old image is the same as the new image so it won't be removed."
-        fi
-    else
-        echo "Unable to determine the image ID for the old image."
-    fi
+
 }
 
 docker-clean "$@"
