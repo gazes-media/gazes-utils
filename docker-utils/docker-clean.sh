@@ -32,7 +32,7 @@ docker-clean() {
     local start_new_container="docker run -d --restart always --name $container_name $env_to_add"
 
     # Stop and remove the existing container
-    docker stop "$container_name" && docker rm "$container_name" > /dev/null
+    docker stop "$container_name" > /dev/null && docker rm "$container_name" > /dev/null
     echo "The container $container_name has been stopped and removed."
 
     if [ -n "$old_image_id" ]; then
@@ -61,8 +61,8 @@ docker-clean() {
 
     start_new_container="$start_new_container $new_image"
     # start the new container
-    eval "$start_new_container"
-    echo "The new container $container_name has been started."
+    local docker_id=$(eval "$start_new_container")
+    echo "The new container $container_name has been started with the id $docker_id."
 
 }
 
