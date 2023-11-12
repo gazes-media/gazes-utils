@@ -1,1 +1,1 @@
-./docker-utils/utils.sh
+."$gazes_directory"/docker-utils/utils.sh
