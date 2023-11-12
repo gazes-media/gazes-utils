@@ -1,4 +1,4 @@
-local current_dir=$(pwd)
+current_dir=$(pwd)
 echo "Adding the load script to your .bashrc file"
 echo "$current_dir/load.sh" >> ~/.bashrc
 echo "Done"
