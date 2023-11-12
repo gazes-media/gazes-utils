@@ -46,6 +46,8 @@ docker-clean() {
             else
                 docker rmi "$old_image_id"
             fi
+        else
+            echo "The old image is the same as the new image so it won't be removed."
         fi
     else
         echo "Unable to determine the image ID for the old image."
