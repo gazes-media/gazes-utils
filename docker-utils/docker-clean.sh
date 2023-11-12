@@ -13,6 +13,11 @@ docker-clean() {
 
     # Get the port mapping before removing the container
     local port_mapping=$(docker port "$container_name" | cut -d' ' -f3 | cut -d: -f2)
+    
+    # Get environment variables before removing the container 
+    local env_variables=$(docker exec "$container_name" env | cut -d= -f1)
+
+    local start_new_container=docker run -d --restart always --name "$container_name" $(for env_var in $env_variables; do echo -e "-e $env_var=$(docker exec "$container_name" printenv "$env_var")"; done)
 
     # Stop and remove the existing container
     docker stop "$container_name" && docker rm "$container_name"
@@ -22,10 +27,12 @@ docker-clean() {
 
     # Start a new container with the same name and the original port mapping
     if [ -n "$port_mapping" ]; then
-        docker run -d -p "$port_mapping:$port_mapping" -e "PORT=$port_mapping" --restart always --name "$container_name" "$new_image"
-    else
-        docker run -d --restart always --name "$container_name" "$new_image"
+        start_new_container="$start_new_container -p $port_mapping:$port_mapping -e PORT=$port_mapping"
     fi
+
+    start_new_container="$start_new_container $new_image"
+    # start the new container
+    eval "$start_new_container"
 
     local new_image_id=$(docker inspect -f '{{.Image}}' "$container_name")
     # Remove the old image
