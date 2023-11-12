@@ -15,6 +15,11 @@ docker-clean() {
 
     # Get the image ID before removing the container
     local old_image_id=$(docker inspect -f '{{.Config.Image}}' "$container_name")
+    # if no old image id, then the container doesn't exist
+    if [ -z "$old_image_id" ]; then
+        echo "The container $container_name doesn't exist."
+        return 1
+    fi
 
     # Get the port mapping before removing the container
     local port_mapping=$(docker port "$container_name" | cut -d' ' -f3 | cut -d: -f2)
