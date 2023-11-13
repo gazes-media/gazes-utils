@@ -1,4 +1,4 @@
-gazes_directory="/usr/local/bin/gazes"
+gazes_directory="/etc/gazes"
 
 checkIfSudo() {
     if [ "$EUID" -ne 0 ]; then
