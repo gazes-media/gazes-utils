@@ -16,14 +16,20 @@ gaze_update() {
 
   echo "Updating gaze..."
   cd "$gazes_directory" || return
-  git pull > /dev/null
+  sudo git config --global --add safe.directory /etc/gazes
+
+  sudo git stash > /dev/null
+  sudo git pull > /dev/null
+  # remake the symlink
+    rm /usr/local/bin/gazes
+    ln -sf "$gazes_directory/gazes.sh" /usr/local/bin/gazes
   echo "Gaze has been updated."
   cd - > /dev/null || return
 }
 
 
 gaze_help() {
-  echo "Usage: gaze <command>"
+  echo "Usage: gazes <command>"
   echo "Commands:"
   echo "  update: update gaze"
   echo "  clean: clean docker containers"

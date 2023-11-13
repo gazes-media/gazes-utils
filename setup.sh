@@ -16,22 +16,15 @@ if ! grep -q "$source_dir" <<< "$PATH"; then
 fi
 
 # Remove old setup
-if [ -f "$source_dir/$source_script" ]; then
+if [ -d "$source_dir" ]; then
     echo "Removing old setup from $source_dir"
-    sudo rm "$source_dir/$source_script"
-    echo "Done"
-fi
-
-if [ -d "$source_dir/gazes" ]; then
-    echo "Removing old setup from $source_dir"
-    sudo rm -r "$source_dir/gazes"
+    sudo rm -r "$source_dir"
     echo "Done"
 fi
 
 # Copy the source script to the source directory
 echo "Copying the source script to $source_dir"
 chmod +x -R "$current_dir"
-sudo cp "$current_dir/$source_script" "$source_dir"
 # Copy the whole gazes directory to /etc/gazes
 sudo cp -r "$current_dir" "$source_dir"
 echo "Done"
@@ -40,4 +33,4 @@ echo "Done"
 echo "Making the source script executable"
 sudo ln -sf "$source_dir/$source_script" /usr/local/bin/gazes 
 
-sudo chown nobody:nogroup /etc/gazes/gazes.sh 
+sudo chown nobody:nogroup /etc/gazes 
