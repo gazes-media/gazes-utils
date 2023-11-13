@@ -16,7 +16,7 @@ git clone https://github.com/Deril-fr/gaze-utils && cd gazes-utils && ./setup.sh
 git clone git@github.com:Deril-fr/gaze-utils.git && cd gazes-utils && ./setup.sh
 ```
 
-PS: Be sure to have the right permissions to execute the script.
+PS: Be sure to have the right permissions to execute the script. (after that it will be added to usr/local/bin)
 
 ## Commands
 
@@ -27,11 +27,11 @@ Start a new container with the specified image, container name and port in daemo
 
 #### Usage
 ```bash
-docker-run <port> <container-name> <image-name>
+gazes run <port> <container-name> <image-name>
 ```
 #### Example
 ```bash
-docker-run 8080 my-container my-image
+gazes run 8080 my-container my-image
 ```
 
 ### Docker-clean
