@@ -34,7 +34,7 @@ docker-clean() {
     local env_to_add=""
     for env_var in $env_variables; do
         env_value=$(docker exec "$container_name" printenv "$env_var")
-        env_to_add+=" -e $env_var=$env_value"
+        env_to_add+=" -e '$env_var=$env_value'"
     done
     local start_new_container="docker run -d --restart always --name $container_name $env_to_add"
 
