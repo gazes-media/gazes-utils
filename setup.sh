@@ -3,23 +3,40 @@
 # Get the current directory
 current_dir=$(pwd)
 
-# Check if the setup is already configured in .bashrc
-if grep -q "gazes_directory=$current_dir" ~/.bashrc && grep -q "source $current_dir/load.sh" ~/.bashrc; then
-    echo "Setup is already configured in .bashrc. No changes needed."
-else
-    # Remove old lines if they exist
-    sed -i "/gazes_directory=/d" ~/.bashrc
-    sed -i "/source $current_dir\/load.sh/d" ~/.bashrc
+# Directory for storing gazes scripts and service
+source_dir="/etc/gazes"
 
-    # Add new lines
-    echo "Adding the load script to your .bashrc file"
-    echo "gazes_directory=$current_dir" >> ~/.bashrc
-    echo "source $current_dir/load.sh" >> ~/.bashrc
+# Name of the source script
+source_script="gazes.sh"
+
+# Check if the setup is already configured in PATH
+if ! grep -q "$source_dir" <<< "$PATH"; then
+    # Add the directory to PATH
+    export PATH="$PATH:$source_dir"
+fi
+
+# Remove old setup
+if [ -f "$source_dir/$source_script" ]; then
+    echo "Removing old setup from $source_dir"
+    sudo rm "$source_dir/$source_script"
     echo "Done"
 fi
 
-# Execute source ~/.bashrc
-echo "Executing source ~/.bashrc"
-source ~/.bashrc
+if [ -d "$source_dir/gazes" ]; then
+    echo "Removing old setup from $source_dir"
+    sudo rm -r "$source_dir/gazes"
+    echo "Done"
+fi
+
+# Copy the source script to the source directory
+echo "Copying the source script to $source_dir"
+sudo cp "$current_dir/$source_script" "$source_dir"
+# Copy the whole gazes directory to /etc/gazes
+sudo cp -r "$current_dir" "$source_dir"
 echo "Done"
-echo "You can now use each command loaded by the load script"
+
+# Making the source script executable
+echo "Making the source script executable"
+sudo chmod +x "$source_dir/$source_script"
+
+sudo chown nobody:nogroup /etc/gazes/gazes.sh

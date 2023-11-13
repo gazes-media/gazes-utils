@@ -6,7 +6,7 @@ fi
  # Check if both arguments are provided
 docker-clean() {
     if [ "$#" -ne 2 ]; then
-        echo "Usage: docker-clean <container-name> <new-image>"
+        echo "Usage: gaze clean <container-name> <new-image>"
         return 1
     fi
 

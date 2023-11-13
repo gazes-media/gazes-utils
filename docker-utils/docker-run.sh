@@ -5,7 +5,7 @@ fi
  # Check if all arguments are provided
  docker-run() {
     if [ "$#" -lt 3 ]; then
-        echo "Usage: docker-run <port> <container-name> <image> [ -e <env-var> -e <env-var> ... ]"
+        echo "Usage: gaze run <port> <container-name> <image> [ -e <env-var> -e <env-var> ... ]"
         return 1
     fi
 
@@ -40,15 +40,14 @@ fi
          env_to_add+=" -e $env_var"
     done
 
-
     # Check if a container using this port already exists
-    if docker ps --filter "publish=$port" --format '{{.Names}}' | grep -q "^$container_name$"; then
+    if sudo docker ps --filter "publish=$port" --format '{{.Names}}' | grep -q "^$container_name$"; then
         echo "A container with the name $container_name and port $port already exists."
         return 1
     fi
 
     # Run the Docker container
-    docker run -d -p "$port:$port" -e "PORT=$port" --name "$container_name" $env_to_add --restart always "$image" > /dev/null
+    sudo docker run -d -p "$port:$port" -e "PORT=$port" --name "$container_name" $env_to_add --restart always "$image" > /dev/null
     echo "The container $container_name has been started."
 }
 

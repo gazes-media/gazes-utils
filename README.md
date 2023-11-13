@@ -6,9 +6,17 @@ So I decided to create a script to automate the process.
 And make it easier to use Docker, especially for beginners.
 ## Installation
 
+(Debian/Ubuntu) [HTTPS]
 ```bash
-git clone https://github.com/deril-fr/gazes-utils && cd gazes-utils && ./setup.sh
+git clone https://github.com/Deril-fr/gaze-utils && cd gazes-utils && ./setup.sh
 ```
+
+(Debian/Ubuntu) [SSH]
+```bash
+git clone git@github.com:Deril-fr/gaze-utils.git && cd gazes-utils && ./setup.sh
+```
+
+PS: Be sure to have the right permissions to execute the script.
 
 ## Commands
 
