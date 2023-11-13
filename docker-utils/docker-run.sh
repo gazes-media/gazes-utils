@@ -1,7 +1,4 @@
-if ! command -v docker &> /dev/null; then
-    echo "Error: Docker is not installed or not in the system PATH. please run docker-install first using sudo su..."
-    exit 1
-fi
+
  # Check if all arguments are provided
  docker-run() {
     if [ "$#" -lt 3 ]; then

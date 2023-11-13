@@ -1,11 +1,9 @@
 gazes_directory="/etc/gazes"
 
 checkIfSudo() {
-    if [ "$EUID" -ne 0 ]; then
-        echo "This script requires superuser privileges. Please run it with sudo."
-        return 1
-    else
-        return 0
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "Error: This script requires superuser privileges. Please run it with sudo."
+        exit 1
     fi
 }
 
@@ -20,8 +18,6 @@ gaze_update() {
   cd "$gazes_directory" || return
   git pull > /dev/null
   echo "Gaze has been updated."
-  mv "$gazes_directory/gazes.sh" "$gazes_directory/../gazes.sh"
-  source ~/.bashrc
   cd - > /dev/null || return
 }
 
@@ -47,7 +43,7 @@ gaze_clean(){
         echo "Error: gazes_directory is not set."
         exit 1
     fi
-    eval $gazes_directory/docker-utils/docker-clean.sh "$@"
+    eval "$gazes_directory/docker-utils/docker-clean.sh" "$@"
 }
 
 gaze_run(){
@@ -64,7 +60,7 @@ gaze_run(){
         echo "Error: gazes_directory is not set."
         exit 1
     fi
-    eval $gazes_directory/docker-utils/docker-run.sh "$@"
+    eval "$gazes_directory/docker-utils/docker-run.sh" "$@"
 }
 
 gaze_git(){
@@ -72,7 +68,7 @@ gaze_git(){
         echo "Error: gazes_directory is not set."
         exit 1
     fi
-    eval $gazes_directory/git-utils/git.sh "$@"
+    eval "$gazes_directory/git-utils/git.sh" "$@"
 }
 
 gaze_docker_install(){
@@ -95,7 +91,7 @@ command=$1
 # if they are no arguments provided, return help
 if [ -z "$command" ]; then
     gaze_help
-    return 1
+    exit 1
 else 
     shift
 fi

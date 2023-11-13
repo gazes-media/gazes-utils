@@ -1,13 +1,7 @@
-$source_dir="/usr/local/bin/gazes"
-
-if [ -z "$source_dir" ]; then
-    echo "Error: source_dir is not set."
-    return 1
-fi
+$source_dir="/etc/gazes"
 command = $1
 shift
 case $command in
-    "update")
         git_update "$@"
         ;;
     *)

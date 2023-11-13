@@ -30,6 +30,7 @@ fi
 
 # Copy the source script to the source directory
 echo "Copying the source script to $source_dir"
+chmod +x -R "$current_dir"
 sudo cp "$current_dir/$source_script" "$source_dir"
 # Copy the whole gazes directory to /etc/gazes
 sudo cp -r "$current_dir" "$source_dir"
@@ -37,6 +38,6 @@ echo "Done"
 
 # Making the source script executable
 echo "Making the source script executable"
-sudo chmod +x "$source_dir/$source_script"
+sudo ln -sf "$source_dir/$source_script" /usr/local/bin/gazes 
 
-sudo chown nobody:nogroup /etc/gazes/gazes.sh
+sudo chown nobody:nogroup /etc/gazes/gazes.sh 
