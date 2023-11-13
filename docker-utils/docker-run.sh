@@ -37,7 +37,7 @@ fi
 
    local env_to_add=""
     for env_var in "${envs[@]}"; do
-         env_to_add+=" -e '$env_var'"
+         env_to_add+=" -e $env_var"
     done
 
 
