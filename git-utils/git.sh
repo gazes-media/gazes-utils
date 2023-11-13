@@ -8,7 +8,9 @@ git_update(){
         echo "correct use is git update <commit message>"
         return 1
     fi
-    eval "$source_dir/git-utils/update.sh" "$@"
+    # making the rest of the command to a single string to pass as an argument
+    commit_message="$1"
+    eval "$source_dir/git-utils/update.sh" "$commit_message"
 }
 
 git_help(){

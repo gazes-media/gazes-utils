@@ -1,6 +1,6 @@
 
  # Check if all arguments are provided
- docker-run() {
+ docker_run() {
     if [ "$#" -lt 3 ]; then
         echo "Usage: gaze run <port> <container-name> <image> [ -e <env-var> -e <env-var> ... ]"
         return 1
@@ -48,4 +48,4 @@
     echo "The container $container_name has been started."
 }
 
-docker-run "$@"
+docker_run "$@"

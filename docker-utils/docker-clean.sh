@@ -1,5 +1,5 @@
 # Check if both arguments are provided
-docker-clean() {
+docker_clean() {
     if [ "$#" -ne 2 ]; then
         echo "Usage: gaze clean <container-name> <new-image>"
         return 1
@@ -68,4 +68,4 @@ docker-clean() {
 
 }
 
-docker-clean "$@"
+docker_clean "$@"
