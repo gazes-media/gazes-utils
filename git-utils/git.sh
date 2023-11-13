@@ -2,7 +2,6 @@ source_dir="/etc/gazes"
 command=$1
 
 git_update(){
-    echo "$@"
     # verify if there are any arguments
     if [ -z "$1" ]; then
         echo "correct use is git update <commit message>"

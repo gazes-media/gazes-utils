@@ -1,3 +1,5 @@
+#!/bin/bash
+
 gazes_directory="/etc/gazes"
 
 checkIfSudo() {
