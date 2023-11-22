@@ -8,15 +8,22 @@ And make it easier to use Docker, especially for beginners.
 
 (Debian/Ubuntu) [HTTPS]
 ```bash
-git clone https://github.com/Deril-fr/gaze-utils && cd gazes-utils && ./setup.sh
+git clone https://github.com/Deril-fr/gazes-utils && cd gazes-utils && ./setup.sh
 ```
 
 (Debian/Ubuntu) [SSH]
 ```bash
-git clone git@github.com:Deril-fr/gaze-utils.git && cd gazes-utils && ./setup.sh
+git clone git@github.com:Deril-fr/gazes-utils.git && cd gazes-utils && ./setup.sh
 ```
 
 PS: Be sure to have the right permissions to execute the script. (after that it will be added to usr/local/bin)
+
+### Bug with CR/LF on Linux
+If you have a bug with the script, it's probably because of the CR/LF.
+You can fix it by running this command:
+```bash
+find . -type f -exec sed -i 's/\r$//' {} \; # Do it before executing setup.sh
+```
 
 ## Commands
 

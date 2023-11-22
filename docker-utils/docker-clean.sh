@@ -15,7 +15,7 @@ docker_clean() {
     fi
 
     # Get the image ID before removing the container
-    local old_image_id=$(docker inspect -f '{{.Config.Image}}' "$container_name")
+    local old_image_id=$(docker inspect -f '{{.Image}}' "$container_name")
 
 
     # Get the port mapping before removing the container
@@ -32,7 +32,13 @@ docker_clean() {
         env_to_add+=" -e '$env_var=$env_value'"
     done
     local start_new_container="docker run -d --restart always --name $container_name $env_to_add"
-
+    # Check if jq is installed
+    if ! command -v jq > /dev/null; then
+        echo "Error: jq is not installed."
+        apt install jq -y > /dev/null
+    fi
+    local new_image_id=$(docker manifest inspect "$new_image" | jq -r '.manifests[0].digest')
+    
     # Stop and remove the existing container
     docker stop "$container_name" > /dev/null && docker rm "$container_name" > /dev/null
     echo "The container $container_name has been stopped and removed."

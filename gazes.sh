@@ -34,24 +34,17 @@ gaze_help() {
   echo "Usage: gazes <command>"
   echo "Commands:"
   echo "  update: update gaze"
-  echo "  clean: clean docker containers"
+  echo "  docker: docker utilities"
+  echo "  git: git utilities"
   echo "  help: display this help message"
 }
 
-gaze_clean(){
-    checkIfSudo
-    local sudo_check_result=$?
-
-    if [ "$sudo_check_result" -ne 0 ]; then
-        echo "Exiting script due to lack of superuser privileges."
-        return "$sudo_check_result"
-    fi
-
+docker(){
     if [ -z "$gazes_directory" ]; then
         echo "Error: gazes_directory is not set."
         exit 1
     fi
-    eval "$gazes_directory/docker-utils/docker-clean.sh" "$@"
+    eval "$gazes_directory/docker-utils/docker.sh" "$@"
 }
 
 gaze_run(){
@@ -78,23 +71,6 @@ gaze_git(){
     fi
     eval "$gazes_directory/git-utils/git.sh" "$@"
 }
-
-gaze_docker_install(){
-    checkIfSudo
-    local sudo_check_result=$?
-
-    if [ "$sudo_check_result" -ne 0 ]; then
-        echo "Exiting script due to lack of superuser privileges."
-        return "$sudo_check_result"
-    fi
-    
-    if [ -z "$gazes_directory" ]; then
-        echo "Error: gazes_directory is not set."
-        exit 1
-    fi
-    eval $gazes_directory/docker-utils/docker-install.sh "$@"
-}
-
 command=$1
 # if they are no arguments provided, return help
 if [ -z "$command" ]; then
@@ -107,14 +83,8 @@ case $command in
     "update")
         gaze_update 
         ;;
-    "run")
-        gaze_run "$@"
-        ;;
-    "clean")
-        gaze_clean "$@"
-        ;;
-    "docker-install")
-        gaze_docker_install
+    "docker")
+        docker "$@"
         ;;
     "git")
         gaze_git "$@"
